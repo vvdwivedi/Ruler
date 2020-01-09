@@ -8,6 +8,11 @@ export const AppWrapper = styled.div`
 export const ContentWrapper = styled.div`
   padding: 30px;
   width: 100%;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  margin-top: 10px;
+  margin-left: 10px;
+  background: #fff;
 `;
 
 export const ContentArea = styled.div`

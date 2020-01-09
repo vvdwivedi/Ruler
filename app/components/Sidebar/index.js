@@ -21,7 +21,7 @@ function Sidebar() {
         <MenuLink to="/entities">Entities</MenuLink>
       </MenuItem>
       <MenuItem>
-        <MenuLink>About</MenuLink>
+        <MenuLink to="/about">About</MenuLink>
       </MenuItem>
     </SidebarWrapper>
   );
