@@ -71,9 +71,8 @@ export default memo(Expression);
 
 export const ExpressionWrapper = styled.div`
   display: flex;
-  padding: 10px;
+  padding: 5px 0;
   border-radius: 5px;
-  background: #fff;
   width: 100%;
   margin-bottom: 10px;
 `;

@@ -26,9 +26,12 @@ export const StyledButton = styled.button`
   background-color: #1b998b;
   border: none;
   color: white;
-  padding: 11px 25px;
+  padding: 10px 25px;
+  border-radius: 5px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  opacity: 0.8;
+  border: 1px solid #fff;
   font-size: 14px;
 `;

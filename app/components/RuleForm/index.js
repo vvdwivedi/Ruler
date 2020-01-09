@@ -68,6 +68,22 @@ class RuleForm extends Component {
     });
   };
 
+  handleOperandUpdate = value => {
+    this.setState(state => {
+      const current = Object.assign({}, state.formData);
+      if (!current.rules) current.rules = {};
+      current.rules.operand = value;
+      return {
+        formData: current,
+      };
+    });
+  };
+
+  handleSave = () => {
+    const data = Object.assign({}, this.state.formData);
+    console.log(data);
+  };
+
   render() {
     const data = this.state.formData || {};
     const expressions = data.rules || {};
@@ -75,7 +91,7 @@ class RuleForm extends Component {
       <div>
         <form>
           <FormGroup>
-            <FormLabel htmlFor="name">Create a rule called</FormLabel>
+            <FormLabel htmlFor="name">This rule is called</FormLabel>
             <InputBox
               type="text"
               id="name"
@@ -83,12 +99,11 @@ class RuleForm extends Component {
               placeholder="rule name"
               value={data.name || ''}
               onChange={e => this.handleChange('name', e.target.value)}
+              inline
             />
           </FormGroup>
           <FormGroup>
-            <FormLabel htmlFor="description">
-              which can be described as
-            </FormLabel>
+            <FormLabel htmlFor="description">and can be described as</FormLabel>
             <InputBox
               type="text"
               id="description"
@@ -96,15 +111,17 @@ class RuleForm extends Component {
               value={data.description || ''}
               onChange={e => this.handleChange('description', e.target.value)}
               placeholder="explain rule details"
+              inline
             />
           </FormGroup>
           <FormGroup block>
             <p>The rule passes when</p>
             <ExpressionGroup
               data={expressions}
-              handleChange={updatedData =>
-                this.handleExpressionUpdate(updatedData)
+              handleExpressionUpdate={(key, val) =>
+                this.handleExpressionUpdate(key, val)
               }
+              handleOperandUpdate={val => this.handleOperandUpdate(val)}
             />
           </FormGroup>
         </form>
