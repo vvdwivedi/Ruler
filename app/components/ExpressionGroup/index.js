@@ -54,7 +54,26 @@ class ExpressionGroup extends Component {
     // this.props.handleChange(); send total updated value
   };
 
-  handleAddGroup = () => {};
+  handleAddGroup = () => {
+    this.setState(state => {
+      const current = Object.assign({}, state.formData);
+      if (!current.expressions) current.expressions = [];
+      current.expressions.push({
+        id: `tempc_123${current.expressions.length + 4005}`,
+        operand: 'and',
+        expressions: [
+          {
+            id: `tesp_123${current.expressions.length + 7001}`,
+            operand: '>',
+            expressions: [],
+          },
+        ],
+      });
+      return {
+        formData: current,
+      };
+    });
+  };
 
   handleAddRule = () => {
     this.setState(state => {
@@ -127,6 +146,7 @@ export const GroupWrapper = styled.div`
   border-radius: 5px;
   padding: 30px;
   padding-right: 0;
+  padding-bottom: 0;
   margin-top: 30px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
 `;
