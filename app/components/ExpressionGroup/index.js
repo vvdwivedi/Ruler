@@ -18,6 +18,23 @@ const operands = [
   { value: 'not', label: 'Following is not satisfied (NOT)' },
 ];
 
+const entities = [
+  { value: 'montly_rental', label: 'Monthly Rental' },
+  { value: 'order_value', label: 'Order Value' },
+  { value: 'customer_age', label: 'Customer Age' },
+];
+
+const comparators = [
+  { value: '>', label: 'is greater than' },
+  { value: '>=', label: 'is greater or equal to' },
+  { value: '<', label: 'is less than' },
+  { value: '<=', label: 'is less or equal to' },
+  { value: '=', label: 'is equal to' },
+  { value: '!=', label: 'is not equal to' },
+  { value: 'in', label: 'contains' },
+  { value: 'notin', label: 'does not contains' },
+];
+
 class ExpressionGroup extends Component {
   constructor(props) {
     super(props);
@@ -26,18 +43,28 @@ class ExpressionGroup extends Component {
     };
   }
 
-  getExpressions = exressions => {
+  getExpressions = expressions => {
     const els = [];
-    exressions.forEach(exp => {
+    expressions.forEach(exp => {
       if (exp.expressions) {
         const isGrouped = exp.expressions.filter(ex => isObject(ex)).length;
         if (isGrouped) {
-          els.push(<ExpressionGroup key={exp.id} data={exp} />);
+          els.push(
+            <ExpressionGroup
+              handleChange={this.handleExpressionUpdate}
+              key={exp.id}
+              data={exp}
+            />,
+          );
         } else {
           els.push(
             <Expression
               key={exp.id}
               data={exp}
+              formOptions={{
+                comparators,
+                entities,
+              }}
               handleChange={(key, value) =>
                 this.handleExpressionChange(exp.id, key, value)
               }
@@ -50,8 +77,14 @@ class ExpressionGroup extends Component {
   };
 
   handleExpressionChange = (id, key, value) => {
-    console.log(id, key, value);
-    // this.props.handleChange(); send total updated value
+    const current = Object.assign({}, this.state.formData);
+    current.expressions.forEach(exp => {
+      if (exp.id === id) {
+        // eslint-disable-next-line no-param-reassign
+        exp[key] = value;
+      }
+    });
+    this.props.handleChange(current);
   };
 
   handleAddGroup = () => {
@@ -90,6 +123,17 @@ class ExpressionGroup extends Component {
     });
   };
 
+  handleExpressionUpdate = value => {
+    const current = Object.assign({}, this.state.formData);
+    current.expressions.forEach((exp, i) => {
+      if (exp.id === value.id) {
+        // eslint-disable-next-line no-param-reassign
+        current.expressions[i] = value;
+      }
+    });
+    this.props.handleChange(current.expressions);
+  };
+
   render() {
     const rules = this.state.formData || {};
     return (
@@ -120,6 +164,7 @@ class ExpressionGroup extends Component {
 
 ExpressionGroup.propTypes = {
   data: PropTypes.object,
+  handleChange: PropTypes.func,
 };
 
 export default memo(ExpressionGroup);

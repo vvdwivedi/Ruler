@@ -5,11 +5,8 @@
  */
 
 import React, { memo } from 'react';
-// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 
 function Sidebar() {
   return (
@@ -45,5 +42,4 @@ export const MenuLink = styled(Link)`
   line-height: 40px;
 `;
 
-export const MenuItem = styled.div`
-`;
+export const MenuItem = styled.div``;

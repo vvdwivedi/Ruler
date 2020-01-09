@@ -9,44 +9,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SelectBox from '../SelectBox/Loadable';
 import InputBox from '../InputBox/Loadable';
-const entities = [
-  { value: 'montly_rental', label: 'Monthly Rental' },
-  { value: 'order_value', label: 'Order Value' },
-  { value: 'customer_age', label: 'Customer Age' },
-];
-
-const comparators = [
-  { value: '>', label: 'is greater than' },
-  { value: '>=', label: 'is greater or equal to' },
-  { value: '<', label: 'is less than' },
-  { value: '<=', label: 'is less or equal to' },
-  { value: '=', label: 'is equal to' },
-  { value: '!=', label: 'is not equal to' },
-  { value: 'in', label: 'contains' },
-  { value: 'notin', label: 'does not contains' },
-];
 
 /* eslint-disable react/prefer-stateless-function */
 class Expression extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formData: {
-        entity: '',
-        comparator: '',
-        value: '',
-      },
-    };
-  }
-
   handleChange = (field, value) => {
-    this.setState(state => {
-      const current = Object.assign({}, state.formData);
-      current[field] = value;
-      return {
-        formData: current,
-      };
-    });
+    const current = Object.assign({}, this.props.data);
+    current.expressions[field === 'entity' ? 0 : 1] = value;
+    this.props.handleChange('expressions', current.expressions);
   };
 
   handleOperandChange = (field, value) => {
@@ -55,12 +24,16 @@ class Expression extends Component {
 
   render() {
     const data = this.props.data || {};
+    const { expressions = [] } = data;
+    const { comparators = [], entities = [] } = this.props.formOptions;
+    const entity = expressions[0];
+    const value = expressions[1];
     return (
       <ExpressionWrapper>
         <Col>
           <SelectBox
             options={entities}
-            value={data.entity || ''}
+            value={entity}
             placeholder="Select Entity"
             fieldName="entity"
             onChange={this.handleChange}
@@ -79,7 +52,7 @@ class Expression extends Component {
           <InputBox
             type="text"
             placeholder="Enter value"
-            value={data.value || ''}
+            value={value}
             onChange={e => this.handleChange('value', e.target.value)}
           />
         </Col>
@@ -91,6 +64,7 @@ class Expression extends Component {
 Expression.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
+  formOptions: PropTypes.object,
 };
 
 export default memo(Expression);
