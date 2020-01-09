@@ -12,7 +12,10 @@ function Sidebar() {
   return (
     <SidebarWrapper>
       <MenuItem>
-        <MenuLink to="/">Rules</MenuLink>
+        <MenuLink to="/">Home</MenuLink>
+      </MenuItem>
+      <MenuItem>
+        <MenuLink to="/rules">Rules</MenuLink>
       </MenuItem>
       <MenuItem>
         <MenuLink to="/entities">Entities</MenuLink>

@@ -12,31 +12,12 @@ import InputBox from '../InputBox/Loadable';
 import ExpressionGroup from '../ExpressionGroup/Loadable';
 import Button from '../Button/Loadable';
 import { FormGroup, FormLabel } from '../common/index';
-const sampleData = {
-  name: 'Test Rule',
-  description: 'This is to test expressions',
-  rules: {
-    id: 'abc_123',
-    operand: 'or',
-    expressions: [
-      { id: 'bc_123', operand: '>', expressions: ['montly_rental', '1200'] },
-      {
-        id: 'def_123',
-        operand: 'and',
-        expressions: [
-          { id: 'abc_13', operand: '>', expressions: ['order_value', '2500'] },
-          { id: 'abc_12', operand: '<', expressions: ['customer_age', '30'] },
-        ],
-      },
-    ],
-  },
-};
 
 class RuleForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: this.props.formData || sampleData,
+      formData: this.props.formData || {},
     };
   }
 
@@ -60,8 +41,8 @@ class RuleForm extends Component {
   handleExpressionUpdate = value => {
     this.setState(state => {
       const current = Object.assign({}, state.formData);
-      if (!current.rules) current.rules = {};
-      current.rules.expressions = value;
+      if (!current.expression) current.expression = {};
+      current.expression.expressions = value;
       return {
         formData: current,
       };
@@ -71,8 +52,8 @@ class RuleForm extends Component {
   handleOperandUpdate = value => {
     this.setState(state => {
       const current = Object.assign({}, state.formData);
-      if (!current.rules) current.rules = {};
-      current.rules.operand = value;
+      if (!current.expression) current.expression = {};
+      current.expression.operand = value;
       return {
         formData: current,
       };
@@ -86,7 +67,8 @@ class RuleForm extends Component {
 
   render() {
     const data = this.state.formData || {};
-    const expressions = data.rules || {};
+    const expressions = data.expression || {};
+    const readOnly = this.props.readOnly || false;
     return (
       <div>
         <form>
@@ -95,6 +77,7 @@ class RuleForm extends Component {
             <InputBox
               type="text"
               id="name"
+              disabled={readOnly}
               style={{ flex: 1 }}
               placeholder="rule name"
               value={data.name || ''}
@@ -107,6 +90,7 @@ class RuleForm extends Component {
             <InputBox
               type="text"
               id="description"
+              disabled={readOnly}
               style={{ flex: 1 }}
               value={data.description || ''}
               onChange={e => this.handleChange('description', e.target.value)}
@@ -121,19 +105,24 @@ class RuleForm extends Component {
               handleExpressionUpdate={(key, val) =>
                 this.handleExpressionUpdate(key, val)
               }
+              disabled={readOnly}
               handleOperandUpdate={val => this.handleOperandUpdate(val)}
             />
           </FormGroup>
         </form>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginTop: '30px',
-          }}
-        >
-          <Button onClick={this.handleSave}>Save</Button>
-        </div>
+        {!readOnly ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginTop: '30px',
+            }}
+          >
+            <Button onClick={this.handleSave}>Save</Button>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     );
   }
@@ -141,6 +130,7 @@ class RuleForm extends Component {
 
 RuleForm.propTypes = {
   formData: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 export default memo(RuleForm);

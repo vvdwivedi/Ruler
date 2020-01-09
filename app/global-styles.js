@@ -1,13 +1,20 @@
 import { createGlobalStyle } from 'styled-components';
 import Roboto from './fonts/Roboto-Regular.ttf';
+import RobotoLight from './fonts/Roboto-Light.ttf';
 
 const GlobalStyle = createGlobalStyle`
-@font-face {
-  font-family: 'Roboto';
-  src: url(${Roboto}) format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+  @font-face {
+    font-family: 'Roboto';
+    src: url(${Roboto}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'RobotoLight';
+    src: url(${RobotoLight}) format('truetype');
+    font-style: normal;
+  }
 
   html,
   body {

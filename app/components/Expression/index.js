@@ -24,6 +24,7 @@ class Expression extends Component {
 
   render() {
     const data = this.props.data || {};
+    const disabled = this.props.disabled || false;
     const { expressions = [] } = data;
     const { comparators = [], entities = [] } = this.props.formOptions;
     const entity = expressions[0];
@@ -34,6 +35,7 @@ class Expression extends Component {
           <SelectBox
             options={entities}
             value={entity}
+            disabled={disabled}
             placeholder="Select Entity"
             fieldName="entity"
             onChange={this.handleChange}
@@ -42,6 +44,7 @@ class Expression extends Component {
         <Col>
           <SelectBox
             options={comparators}
+            disabled={disabled}
             value={data.operand || ''}
             placeholder="Select rule"
             fieldName="operand"
@@ -51,6 +54,7 @@ class Expression extends Component {
         <Col noPadding>
           <InputBox
             type="text"
+            disabled={disabled}
             placeholder="Enter value"
             value={value}
             onChange={e => this.handleChange('value', e.target.value)}
@@ -65,6 +69,7 @@ Expression.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
   formOptions: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 export default memo(Expression);

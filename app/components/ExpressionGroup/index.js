@@ -49,6 +49,7 @@ class ExpressionGroup extends Component {
               }
               handleOperandUpdate={val => this.handleOperandUpdate(exp.id, val)}
               key={exp.id}
+              disabled={this.props.disabled}
               data={exp}
             />,
           );
@@ -57,6 +58,7 @@ class ExpressionGroup extends Component {
             <Expression
               key={exp.id}
               data={exp}
+              disabled={this.props.disabled}
               formOptions={{
                 comparators,
                 entities,
@@ -149,24 +151,34 @@ class ExpressionGroup extends Component {
 
   render() {
     const rules = this.props.data || {};
+    const disabled = this.props.disabled || false;
     const color = this.getColor(rules.operand);
     return (
       <GroupWrapper>
         <OperandWrapper background={color}>
-          <Col style={{ flex: 1 }}>
+          <Col style={{ flex: 1 }} noPadding={disabled}>
             <SelectBox
               options={operands}
               value={rules.operand || ''}
               fieldName="operand"
+              disabled={disabled}
               onChange={(field, val) => this.props.handleOperandUpdate(val)}
             />
           </Col>
-          <Col>
-            <Button onClick={this.handleAddGroup}>Add Group</Button>
-          </Col>
-          <Col noPadding>
-            <Button onClick={this.handleAddRule}>Add Rule</Button>
-          </Col>
+          {!disabled ? (
+            <Col>
+              <Button onClick={this.handleAddGroup}>Add Group</Button>
+            </Col>
+          ) : (
+            ''
+          )}
+          {!disabled ? (
+            <Col noPadding>
+              <Button onClick={this.handleAddRule}>Add Rule</Button>
+            </Col>
+          ) : (
+            ''
+          )}
         </OperandWrapper>
         <ExpressionWrapper>
           {this.getExpressions(rules.expressions || [])}
@@ -180,6 +192,7 @@ ExpressionGroup.propTypes = {
   data: PropTypes.object,
   handleExpressionUpdate: PropTypes.func,
   handleOperandUpdate: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default memo(ExpressionGroup);

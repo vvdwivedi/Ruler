@@ -24,7 +24,6 @@ export default memo(Button);
 
 export const StyledButton = styled.button`
   background-color: #1b998b;
-  border: none;
   color: white;
   padding: 10px 25px;
   border-radius: 5px;
